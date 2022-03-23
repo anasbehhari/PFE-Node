@@ -1,0 +1,14 @@
+{
+  "name": "pfe-node",
+  "version": "1.0.0",
+  "description": "Projet fin d'etude",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Zakarya Walid",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
