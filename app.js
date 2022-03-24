@@ -8,7 +8,7 @@ app.get('/', (req, res)=>{
 })
 
 const events = require('./router/event-route')
-// app.use('/events',events)
+app.use('/events',events)
 
 app.listen(3000,()=>{
     console.log("app is working");
