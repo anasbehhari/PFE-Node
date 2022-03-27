@@ -15,6 +15,13 @@ app.use(express.static('node_modules'))
 
 const events = require('./router/event-route')
 app.use('/',events)
+app.use('/reservation',events)
+app.use('/doctors',events)
+app.use('/contact',events)
+app.use('/login',events)
+app.use('/register',events)
+app.use('/account',events)
+app.use('/request',events)
 
 app.listen(3000,()=>{
     console.log("app is working");
