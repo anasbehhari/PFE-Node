@@ -3,7 +3,7 @@ const req = require('express/lib/request')
 const router = express.Router()
 
 router.get('/', (req, res)=>{
-    res.send('this is event page')
+    res.render('pages/index')
 })
 
 module.exports = router
