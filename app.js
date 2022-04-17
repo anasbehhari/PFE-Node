@@ -1,29 +1,33 @@
 const express = require("express")
-const req = require("express/lib/request")
-const res = require("express/lib/response")
 const app = express()
-const db = require('./config/database')
+const mongoose = require("mongoose")
 
-app.set('view engine', 'ejs')
+require("dotenv").config()
+app.use(express.static('./public'));
+app.use("/css",express.static(__dirname + "public/css"))
+app.use("/fonts",express.static(__dirname + "public/fonts"))
+app.use("/icons",express.static(__dirname + "public/icons"))
+app.use("/scripts",express.static(__dirname + "public/js"))
+app.use("/media",express.static(__dirname + "public/img"))
+app.use("/uploads",express.static(__dirname + "public/uploads"))
+//ejs Setup =>
+app.set("views","./views")
+app.set("view engine","ejs")
+//request JSON 'parse' =>
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json());
+//routes =>
+app.use("/",require("./router/event-route"));
 
-app.use(express.static('public'))
-app.use(express.static('node_modules'))
 
-// app.get('/', (req, res)=>{
-//     res.send("done!!")
-// })
 
-const events = require('./router/event-route')
-app.use('/',events)
-app.use('/reservation',events)
-app.use('/doctors',events)
-app.use('/contact',events)
-app.use('/login',events)
-app.use('/register',events)
-app.use('/account',events)
-app.use('/request',events)
-app.use('/user-account',events)
 
-app.listen(3000,()=>{
-    console.log("app is working");
+//db config  =>
+mongoose
+    .connect(process.env.DBURI,{ useFindAndModify: true,useUnifiedTopology: true,useNewUrlParser: true })
+    .then(() => console.log("MongoDb Connected..."))
+    .catch(err => console.log(err))
+//Listener =>
+app.listen(process.env.PORT,() => {
+    console.log(`Server running on ${process.env.PORT}`);
 })
