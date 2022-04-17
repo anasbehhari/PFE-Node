@@ -22,6 +22,7 @@ app.use('/login',events)
 app.use('/register',events)
 app.use('/account',events)
 app.use('/request',events)
+app.use('/user-account',events)
 
 app.listen(3000,()=>{
     console.log("app is working");

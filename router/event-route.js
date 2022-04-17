@@ -26,6 +26,12 @@ router.get('/account', (req, res)=>{
 router.get('/request', (req, res)=>{
     res.render('pages/doctor/request')
 })
+router.get('/user-account', (req, res)=>{
+    res.render('pages/users/account')
+})
+router.get('/rdv', (req, res)=>{
+    res.render('pages/users/rdv')
+})
 
 
 module.exports = router
