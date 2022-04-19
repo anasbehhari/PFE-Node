@@ -1,6 +1,8 @@
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
+// const passport = require("passport");
+// require("./config/passport")(passport);
 
 require("dotenv").config()
 app.use(express.static('./public'));

@@ -23,14 +23,17 @@ router.get('/register', (req, res)=>{
 })
 router.post('/register', (req, res)=>{
     const {body} = req
-    const {name, email, phone, specialites, password} = body
+    const {name, email, phone, specialite, password} = body
     const newDoctor = new Doctor({
-        name, email, phone, specialites, password
+        name, email, phone, specialite, password
     }) 
     newDoctor.save()
     .then(result => {
         if(result != null){
-            res.redirect('/login')
+            res.render('pages/login', {
+                success: true,
+                user: result.email,
+            })
         }
         else{
             res.redirect('/register')
