@@ -8,13 +8,7 @@
           <h1 class="text-center text-xl-start">Content de te revoir</h1>
           <p class="text-center text-xl-start pb-3 mb-3">Vous n'avez pas encore de compte?<a
               href="account-signup.html">Inscrivez-vous ici.</a></p>
-          <% if( typeof success!="undefined" ) { %>
-            <div class="alert alert-success" role="alert">
-              Utilisateur <b>
-                <%= user %>
-              </b> bien enregistré. Connectez-vous!
-            </div>
-            <% } %>
+          
               <% if (success_msg !='') { %>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                   <span class='fw-bold'>

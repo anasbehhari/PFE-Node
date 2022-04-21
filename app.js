@@ -37,7 +37,7 @@ app.use("/uploads", express.static(__dirname + "public/uploads"));
 app.use("/views", express.static(__dirname + "public/views"));
 app.use("/img", express.static(__dirname + "public/media"));
 
-//multer
+
 
 //ejs setup
 

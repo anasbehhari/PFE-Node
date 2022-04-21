@@ -11,22 +11,24 @@ router.get("/register", (req, res) => {
 router.post("/register", (req, res) => {
   const { body } = req;
   const { name, email, phone, specialite, password } = body;
+  console.log(specialite);
   const newUser = new User({
     name,
     email,
     phone,
     specialite,
     password,
-    Role: "Admin",
+    Role: specialite == undefined ? "Client" : "Doctor",
   });
   newUser
     .save()
     .then((result) => {
       if (result != null) {
-        res.render("pages/login", {
-          success: true,
-          user: result.email,
-        });
+        req.flash(
+          "success_msg",
+          email + " bien enregistré. Connectez-vous!"
+        );
+        res.redirect("/login");
       } else {
         res.redirect("/register");
       }
@@ -35,34 +37,32 @@ router.post("/register", (req, res) => {
       res.redirect("/register");
     });
 });
-router.get(
-  "/user-account",
+router.get("/user-account",
   ensureAuthenticated,
   ensureRole("Client"),
   (req, res) => {
     res.render("pages/users/account");
   }
 );
-router.get(
-  "/doctor-account",
+router.get("/doctor-account",
   ensureAuthenticated,
   ensureRole("Doctor"),
   (req, res) => {
     res.render("pages/doctor/account");
   }
 );
-
 router.get("/login", (req, res) => {
   if (req.user) {
     if (req.user.Role == "Doctor") {
-      res.redirect("/user-account");
+      res.redirect("/doctor-account");
     } else {
-      res.redirect("/admin");
+      res.redirect("/user-account");
     }
   } else {
     res.render("pages/login");
   }
 });
+
 
 router.post("/login",
   passport.authenticate("local", {
@@ -71,13 +71,12 @@ router.post("/login",
   }),
   function (req, res, next) {
     if (req.user.Role == "Doctor") {
-      res.redirect("/user-account");
+      res.redirect("/doctor-account");
     } else {
-      res.redirect("/admin");
+      res.redirect("/user-account");
     }
   }
 );
-
 router.get("/logout", (req, res) => {
   req.logOut();
   req.flash("success_msg", "You Are successfully logged out");
