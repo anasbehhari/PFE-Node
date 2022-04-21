@@ -1,28 +1,38 @@
-// const LocalStrategy = require("passport-local").Strategy;
+const LocalStrategy = require("passport-local").Strategy;
+//USER MODEL
+const User = require("../models/User");
+module.exports = function (passport) {
+  passport.use(
+    new LocalStrategy((username, password, done) => {
+      User.findOne({ email: username })
+        .then((user) => {
+          if (!user) {
+            return done(null, false, {
+              message: "Email n'existe pas !",
+              type: "error",
+            });
+          }
+          //Match password
+          if (password == user.password) {
+             return done(null, user);
+          } else {
+            return done(null, false, {
+              message: "Email ou Mot de pass incorrect",
+              type: "error",
+            });
+          }
+        })
+        .catch((err) => console.log(err));
+    })
+  );
 
-// //USER MODEL
-// const Admin = require("../models/Admin");
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
 
-// module.exports = function (passport) {
-//     passport.use('admin', new LocalStrategy({
-//         // Fields to accept
-//         usernameField: 'email', // default is username, override to accept email
-//         passwordField: 'password',
-//         passReqToCallback: true // allows us to access req in the call back
-//       }, async (req, email, password, done) => {
-//         // Check if user and password is valid
-//         let user = await User.findBy('email', email)
-//         let passwordValid = user && bcrypt.compareSync(password, user.passwordHash)
-    
-//         // If password valid call done and serialize user.id to req.user property
-//         if (passwordValid) {
-//           return done(null, {
-//             id: user.id
-//           })
-//         }
-//         // If invalid call done with false and flash message
-//         return done(null, false, {
-//           message: 'Invalid email and/or password'
-//         });
-//     }))
-// }
+  passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => {
+      done(err, user);
+    });
+  });
+};
